@@ -1,0 +1,5 @@
+# Dépendances gérées par Composer
+vendor/
+
+# Fichier de configuration local
+config/database.php
