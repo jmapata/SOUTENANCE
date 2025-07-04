@@ -9,13 +9,13 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_ADMIN_SYS'
 $page = $_GET['page'] ?? 'accueil';
 $page_title = 'Tableau de Bord';
 switch ($page) {
-    case 'gestion_etudiants': $page_title = 'Gestion des Étudiants'; break;
-    case 'gestion_enseignants': $page_title = 'Gestion des Enseignants'; break;
-    case 'gestion_personnel': $page_title = 'Gestion du Personnel'; break;
-    case 'gestion_roles': $page_title = 'Gestion des Rôles & Habilitations'; break;
-    case 'referentiels': $page_title = 'Gestion des Référentiels'; break;
-    case 'parametres': $page_title = 'Paramètres du Système'; break;
-    case 'audit_logs': $page_title = 'Journaux d\'Audit'; break;
+    case 'gestion_etudiants': $page_title = ''; break;
+    case 'gestion_enseignants': $page_title = ''; break;
+    case 'gestion_personnel': $page_title = ''; break;
+    case 'gestion_roles': $page_title = ''; break;
+    case 'referentiels': $page_title = ''; break;
+    case 'parametres': $page_title = ''; break;
+    case 'audit_logs': $page_title = ''; break;
 }
 ?>
 <!DOCTYPE html>
@@ -25,6 +25,11 @@ switch ($page) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?> - Administration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="assets/css/admin_style.css">
 </head>
 <body>
