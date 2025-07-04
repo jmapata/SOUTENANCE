@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_ADMIN_SYS'
 
 // Logique pour déterminer le titre de la page en fonction du menu
 $page = $_GET['page'] ?? 'accueil';
-$page_title = 'Tableau de Bord';
+$page_title = '';
 switch ($page) {
     case 'gestion_etudiants': $page_title = ''; break;
     case 'gestion_enseignants': $page_title = ''; break;
@@ -31,6 +31,7 @@ switch ($page) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/admin_style.css">
+    <link rel="stylesheet" href="assets/js/admin_style.css">
 </head>
 <body>
     <aside class="sidebar">
