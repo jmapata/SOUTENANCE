@@ -1,51 +1,81 @@
-<?php
-// /dashboard_commission.php
-require_once __DIR__ . '/includes/header.php';
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Commission - GestionMySoutenance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/commission_style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-gavel logo-icon"></i>
+            <span class="logo-text">Commission</span>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li class="nav-item active">
+                    <a href="dashboard_commission.php"><i class="fa-solid fa-table-columns icon"></i> Tableau de Bord</a>
+                </li>
+                
+                <li class="nav-section-title">Évaluation des Rapports</li>
+                <li class="nav-item">
+                    <a href="dashboard_commission.php?page=rapports_a_traiter"><i class="fa-solid fa-folder-open icon"></i> Rapports à Traiter</a>
+                </li>
+                <li class="nav-item">
+                    <a href="dashboard_commission.php?page=gestion_corrections"><i class="fa-solid fa-pen-to-square icon"></i> Gestion des Corrections</a>
+                </li>
 
-// Vous devriez créer un traitement/permission comme 'TRAIT_COMMISSION_EVALUER'
-// if (!checkPermission('TRAIT_COMMISSION_EVALUER')) { die("Accès non autorisé."); }
+                <li class="nav-section-title">Procès-Verbaux</li>
+                <li class="nav-item">
+                    <a href="dashboard_commission.php?page=gestion_pv"><i class="fa-solid fa-file-signature icon"></i> Gestion des PV</a>
+                </li>
 
-// Récupérer les rapports avec le statut "CONFORME"
-$stmt = $p_pdo->query(
-    "SELECT r.id_rapport_etudiant, r.libelle_rapport_etudiant, r.date_soumission, e.nom, e.prenom
-     FROM rapport_etudiant r
-     JOIN etudiant e ON r.numero_carte_etudiant = e.numero_carte_etudiant
-     WHERE r.id_statut_rapport = 'CONFORME'
-     ORDER BY r.date_soumission ASC"
-);
-$rapports_a_evaluer = $stmt->fetchAll();
-?>
+                <li class="nav-section-title">Outils</li>
+                <li class="nav-item">
+                    <a href="dashboard_commission.php?page=communication"><i class="fa-solid fa-comments icon"></i> Communication</a>
+                </li>
+                <li class="nav-item">
+                    <a href="dashboard_commission.php?page=historique"><i class="fa-solid fa-clock-rotate-left icon"></i> Historique & Archives</a>
+                </li>
+                
+                <li class="nav-item" style="margin-top: auto; padding-top: 20px;">
+                    <a href="logout.php"><i class="fa-solid fa-arrow-right-from-bracket icon"></i> Déconnexion</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
-<h2>Rapports en attente d'évaluation par la Commission</h2>
-<p>Liste des mémoires validés administrativement et prêts pour une évaluation académique.</p>
+    <div class="main-container">
+        <header class="header">
+            <i class="fa-solid fa-bars menu-toggle-icon"></i>
+            <h1 class="header-title">Tableau de Bord</h1>
+        </header>
 
-<table>
-    <thead>
-        <tr>
-            <th>Date de soumission</th>
-            <th>Étudiant</th>
-            <th>Titre du rapport</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (empty($rapports_a_evaluer)): ?>
-            <tr>
-                <td colspan="4">Aucun rapport en attente d'évaluation.</td>
-            </tr>
-        <?php endif; ?>
+        <main class="content-area">
+             <?php
+            // La logique de chargement de page reste la même
+            $allowed_pages = ['rapports_a_traiter', 'gestion_corrections', 'gestion_pv', 'communication', 'historique'];
+            $page = $_GET['page'] ?? 'accueil';
+            
+            if (in_array($page, $allowed_pages)) {
+                // Le dossier 'commission_views' contient les fichiers de contenu
+                include 'commission_views/' . $page . '.php';
+            } else {
+                echo '<h2>Bienvenue, Membre de la Commission !</h2>';
+                echo '<p>Utilisez les menus regroupés par section pour naviguer dans votre espace de travail.</p>';
+            }
+            ?>
+        </main>
+    </div>
 
-        <?php foreach ($rapports_a_evaluer as $rapport): ?>
-        <tr>
-            <td><?php echo (new DateTime($rapport['date_soumission']))->format('d/m/Y H:i'); ?></td>
-            <td><?php echo htmlspecialchars($rapport['prenom'] . ' ' . $rapport['nom']); ?></td>
-            <td><?php echo htmlspecialchars($rapport['libelle_rapport_etudiant']); ?></td>
-            <td>
-                <a href="evaluation_rapport.php?id=<?php echo $rapport['id_rapport_etudiant']; ?>" class="btn">Évaluer ce rapport</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggleIcon = document.querySelector('.menu-toggle-icon');
+            const sidebar = document.querySelector('.sidebar');
+            menuToggleIcon.addEventListener('click', () => sidebar.classList.toggle('visible'));
+        });
+    </script>
+</body>
+</html>

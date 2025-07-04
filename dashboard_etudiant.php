@@ -111,7 +111,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <i class="fa-solid fa-graduation-cap logo-icon"></i>
-            <span class="logo-text">ValidMaster</span>
+            <span class="logo-text">Espace Étudiant</span>
         </div>
         
         <nav class="nav-menu">
