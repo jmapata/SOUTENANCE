@@ -28,11 +28,13 @@ try {
     $stmt->execute([$login]);
     $user = $stmt->fetch();
 
-    // 5. Vérifier si l'utilisateur existe ET si le mot de passe est correct
-    if ($user && password_verify($password, $user['mot_de_passe'])) {
+    // 5. VÉRIFICATION FINALE :
+    // On vérifie si l'utilisateur existe ET si le mot de passe correspond au hachage "nettoyé"
+    if ($user && password_verify($password, trim($user['mot_de_passe']))) {
+        
         // Le mot de passe est correct !
 
-        // 6. Régénérer l'ID de session pour la sécurité (prévention de fixation de session)
+        // 6. Régénérer l'ID de session pour la sécurité
         session_regenerate_id(true);
 
         // 7. Stocker les informations de l'utilisateur en session
@@ -47,7 +49,6 @@ try {
         $updateStmt->execute([$user['numero_utilisateur']]);
 
         // 9. Rediriger vers le tableau de bord de l'administrateur
-        // Dans le futur, vous pourrez faire une redirection en fonction du rôle (user_group)
         header('Location: ../dashboard_admin.php');
         exit();
 
@@ -58,8 +59,10 @@ try {
     }
 
 } catch (PDOException $e) {
-    // En cas d'erreur de base de données, rediriger avec une erreur générique
-    // En production, vous devriez logger l'erreur $e->getMessage()
-    die("Erreur de base de données. Veuillez réessayer.");
+    // En cas d'erreur de base de données, on peut logger l'erreur
+    // error_log("Erreur de connexion : " . $e->getMessage());
+    // Et rediriger avec une erreur générique
+    header('Location: ../login.php?error=dberror');
+    exit();
 }
 ?>
