@@ -31,12 +31,11 @@ switch ($page) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/admin_style.css">
-    <link rel="stylesheet" href="assets/js/admin_style.css">
 </head>
 <body>
     <aside class="sidebar">
         <div class="sidebar-header">
-            <i class="fa-solid fa-shield-halved logo-icon"></i>
+            <i class="fa-solid fa-shield-halved logo-icon">ValidMaster</i>
             <span class="logo-text">Administration</span>
         </div>
         <nav class="nav-menu">
@@ -97,6 +96,7 @@ switch ($page) {
             ?>
         </main>
     </div>
+     <script src="assets/js/admin_style.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
