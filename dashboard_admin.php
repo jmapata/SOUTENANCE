@@ -9,6 +9,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_ADMIN_SYS'
 $page = $_GET['page'] ?? 'accueil';
 $page_title = '';
 switch ($page) {
+    case 'accueil.php': $page_title = ''; break;
     case 'gestion_etudiants': $page_title = ''; break;
     case 'gestion_enseignants': $page_title = ''; break;
     case 'gestion_personnel': $page_title = ''; break;
@@ -76,9 +77,23 @@ switch ($page) {
 
     <div class="main-container">
         <header class="header">
-            <i class="fa-solid fa-bars menu-toggle-icon"></i>
-            <h1 class="header-title"><?php echo $page_title; ?></h1>
-        </header>
+            <div class="header-left">
+                <i class="fa-solid fa-bars menu-toggle-icon"></i>
+                <h1 class="header-title"><?php echo $page_title; ?></h1>
+            </div>
+
+            <div class="header-right">
+                <div class="header-user-profile">
+                    <div class="user-avatar">
+                        <?php echo strtoupper(substr($_SESSION['user_login'] ??  0, 2)); ?>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name"><?php echo htmlspecialchars($_SESSION['user_login']); ?></span>
+                        <span class="user-role">Administrateur Système</span>
+                    </div>
+                </div>
+            </div>
+            </header>
 
         <main class="content-area">
             <?php
@@ -87,30 +102,17 @@ switch ($page) {
                 'gestion_roles', 'referentiels', 'parametres', 'audit_logs'
             ];
             
-            if (isset($_GET['page']) && in_array($_GET['page'], $allowed_pages)) {
-                include 'admin_views/' . $_GET['page'] . '.php';
-            } else {
-                echo '<h2>Bienvenue, ' . htmlspecialchars($_SESSION['user_login']) . ' !</h2>';
-                echo '<p>Sélectionnez une option dans le menu pour gérer la plateforme.</p>';
-            }
-            ?>
+           if (isset($_GET['page']) && in_array($_GET['page'], $allowed_pages)) {
+    include 'admin_views/' . $_GET['page'] . '.php';
+} else {
+    // INCLUT MAINTENANT VOTRE FICHIER D'ACCUEIL PAR DÉFAUT
+    include 'admin_views/accueil.php';
+}
+?>
         </main>
     </div>
-     <script src="assets/js/admin_style.js"></script>
+    
+ <script src="assets/js/admin_script.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggleIcon = document.querySelector('.menu-toggle-icon');
-            const sidebar = document.querySelector('.sidebar');
-            menuToggleIcon.addEventListener('click', () => sidebar.classList.toggle('visible'));
-
-            const dropdownToggles = document.querySelectorAll('.menu-toggle-btn');
-            dropdownToggles.forEach(toggle => {
-                toggle.addEventListener('click', () => {
-                    toggle.parentElement.classList.toggle('open');
-                });
-            });
-        });
-    </script>
 </body>
 </html>
