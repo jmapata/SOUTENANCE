@@ -39,6 +39,10 @@ $total_scolarite = 1300000;
                 <div class="form-grid">
                     <div class="form-group"><label for="nom">Nom</label><input type="text" id="nom" name="nom" required></div>
                     <div class="form-group"><label for="prenom">Prénom</label><input type="text" id="prenom" name="prenom" required></div>
+                    <div class="form-group">
+                        <label for="email">Email de Contact</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
                     <div class="form-group"><label for="date_naissance">Date de naissance</label><input type="date" id="date_naissance" name="date_naissance"></div>
                     <div class="form-group"><label for="nationalite">Nationalité</label><input type="text" id="nationalite" name="nationalite"></div>
                     <div class="form-group"><label for="telephone">Contact</label><input type="tel" id="telephone" name="telephone"></div>
