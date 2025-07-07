@@ -7,7 +7,6 @@ require_once '../config/database.php';
 
 // 2. Vérifier que le formulaire a bien été soumis
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    // Si non, rediriger vers la page de connexion
     header('Location: ../login.php');
     exit();
 }
@@ -28,29 +27,54 @@ try {
     $stmt->execute([$login]);
     $user = $stmt->fetch();
 
-    // 5. VÉRIFICATION FINALE :
-    // On vérifie si l'utilisateur existe ET si le mot de passe correspond au hachage "nettoyé"
+    // 5. Vérifier si l'utilisateur existe ET si le mot de passe est correct
     if ($user && password_verify($password, trim($user['mot_de_passe']))) {
         
-        // Le mot de passe est correct !
-
-        // 6. Régénérer l'ID de session pour la sécurité
+        // Régénérer l'ID de session pour la sécurité
         session_regenerate_id(true);
 
-        // 7. Stocker les informations de l'utilisateur en session
+        // Stocker les informations de l'utilisateur en session
         $_SESSION['loggedin'] = true;
         $_SESSION['user_id'] = $user['numero_utilisateur'];
         $_SESSION['user_login'] = $user['login_utilisateur'];
         $_SESSION['user_group'] = $user['id_groupe_utilisateur'];
         $_SESSION['user_type'] = $user['id_type_utilisateur'];
         
-        // 8. Mettre à jour la date de dernière connexion
+        // Mettre à jour la date de dernière connexion
         $updateStmt = $pdo->prepare("UPDATE utilisateur SET derniere_connexion = NOW() WHERE numero_utilisateur = ?");
         $updateStmt->execute([$user['numero_utilisateur']]);
 
-        // 9. Rediriger vers le tableau de bord de l'administrateur
-        header('Location: ../dashboard_admin.php');
+        // ==============================================================
+        // 9. LOGIQUE DE REDIRECTION BASÉE SUR LE GROUPE DE L'UTILISATEUR
+        // ==============================================================
+        $userGroup = $user['id_groupe_utilisateur'];
+        $redirect_path = '../login.php?error=unknown_role'; // Redirection par défaut
+
+        switch ($userGroup) {
+            case 'GRP_ADMIN_SYS':
+                $redirect_path = '../dashboard_admin.php';
+                break;
+            
+            case 'GRP_ETUDIANT':
+                $redirect_path = '../dashboard_etudiant.php';
+                break;
+            
+            case 'GRP_SCOLARITE':
+                $redirect_path = '../dashboard_gestion_scolarite.php';
+                break;
+                
+            case 'GRP_CONFORMITE':
+                $redirect_path = '../dashboard_conformite.php';
+                break;
+            
+            case 'GRP_COMMISSION':
+                $redirect_path = '../dashboard_commission.php';
+                break;
+        }
+        
+        header('Location: ' . $redirect_path);
         exit();
+        // --- FIN DE LA LOGIQUE DE REDIRECTION ---
 
     } else {
         // L'utilisateur n'existe pas ou le mot de passe est incorrect
@@ -59,9 +83,7 @@ try {
     }
 
 } catch (PDOException $e) {
-    // En cas d'erreur de base de données, on peut logger l'erreur
-    // error_log("Erreur de connexion : " . $e->getMessage());
-    // Et rediriger avec une erreur générique
+    // En cas d'erreur de base de données
     header('Location: ../login.php?error=dberror');
     exit();
 }

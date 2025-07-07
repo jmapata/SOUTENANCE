@@ -1095,3 +1095,65 @@ body {
     font-weight: 600;
     display: block;
 }
+/* --- NOUVEAUX STYLES POUR DASHBOARD ADMIN --- */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.stat-card .icon-container {
+    font-size: 24px;
+    padding: 16px;
+    border-radius: 50%;
+    color: var(--accent-color);
+    background-color: #e0e7ff;
+}
+
+.stat-card .info h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.stat-card .info p {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.search-card {
+    margin-bottom: 30px;
+}
+
+.search-box {
+    display: flex;
+    max-width: 400px;
+}
+.search-box input {
+    width: 100%;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+}
+.search-box button {
+    border-radius: 0 6px 6px 0;
+}
+
+/* Amélioration pour les formulaires en ligne dans les tableaux */
+.form-inline-action {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
