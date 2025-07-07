@@ -3,3 +3,6 @@ vendor/
 
 # Fichier de configuration local
 config/database.php
+
+# Fichier de configuration local
+config/mailer.php
