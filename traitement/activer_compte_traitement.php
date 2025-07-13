@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['numero_utilisateur']
         if ($etudiant && !empty($etudiant['email_principal'])) {
             
             $sujet = "Votre compte ValidMaster est maintenant actif ";
-            $contenu_html = "<h1>Votre compte est activé !</h1>
+            $contenu_html = "<h1>Votre compte est activé </h1>
                              <p>Bonjour " . htmlspecialchars($etudiant['prenom']) . ",</p>
                              <p>Bonne nouvelle ! Le service de scolarité a validé votre dossier et votre compte sur la plateforme est maintenant actif.</p>
                              <p>Vous pouvez désormais vous connecter en utilisant votre email et le mot de passe qui vous a été communiqué précédemment.</p>

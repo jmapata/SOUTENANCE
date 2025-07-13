@@ -98,3 +98,108 @@ td { font-size: 14px; color: var(--text-dark); }
     .header { padding: 0 20px; }
     .content-area { padding: 20px; }
 }
+/* Style pour les infos utilisateur dans le header */
+.user-info {
+    margin-left: auto; /* Pousse l'élément tout à droite */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info .user-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 1rem;
+}
+
+.user-info .user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+/* Style pour la page de vérification de rapport */
+.verification-container {
+    display: flex;
+    gap: 1.5rem;
+    /* Calcule la hauteur pour remplir l'écran sous le header */
+    height: calc(100vh - 220px); 
+}
+
+.editor-panel {
+    flex: 3; /* L'éditeur prend plus de place */
+    display: flex;
+    flex-direction: column;
+}
+
+.decision-panel {
+    flex: 1; /* Le panneau de décision est plus petit */
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid #e9ecef;
+}
+
+.decision-panel h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #343a40;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+}
+.decision-panel p {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+.decision-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.decision-actions .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.form-instructions {
+    margin-top: 25px;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.form-instructions ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+/* S'assurer que l'éditeur TinyMCE remplit bien son conteneur */
+.tox-tinymce {
+    height: 100% !important;
+}
+/* ======================================================= */
+/* ## FIX FINAL : Forcer l'éditeur au premier plan ## */
+/* ======================================================= */
+
+/* On cible le conteneur principal de CKEditor */
+.ck.ck-editor {
+    position: relative; /* Nécessaire pour que z-index fonctionne */
+    z-index: 100 !important;
+}
+
+/* On s'assure que le panneau de décision ne passe pas par-dessus */
+.decision-panel {
+    position: relative;
+    z-index: 10;
+}

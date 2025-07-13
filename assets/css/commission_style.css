@@ -77,3 +77,30 @@ th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--bo
     .sidebar.visible { transform: translateX(0); }
     .menu-toggle-icon { display: block; }
 }
+/* Style pour les infos utilisateur dans le header */
+.user-info {
+    margin-left: auto; /* Pousse l'élément tout à droite */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info .user-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 1rem;
+}
+
+.user-info .user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}

@@ -1,16 +1,45 @@
 <?php
+session_start();
+
+// Sécurité : vérifier que l'utilisateur est connecté et est bien un gestionnaire de scolarité
+if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_SCOLARITE') {
+    header('Location: login.php?error=unauthorized');
+    exit();
+}
+
+// ==========================================================
+// ## LOGIQUE PHP EN HAUT DU FICHIER POUR ÉVITER LES ERREURS ##
+// ==========================================================
+// On définit le nom et les initiales UNE SEULE FOIS ici.
+
+// 1. On récupère le nom depuis la session. Si elle est vide, on met un nom par défaut.
+$fullName = $_SESSION['user_full_name'] ?? 'Gestionnaire';
+
+// 2. On calcule les initiales de manière sécurisée
+$name_parts = explode(' ', htmlspecialchars($fullName));
+$initials = '';
+if (isset($name_parts[0]) && !empty($name_parts[0])) {
+    $initials .= strtoupper(substr($name_parts[0], 0, 1));
+}
+if (isset($name_parts[1]) && !empty($name_parts[1])) {
+    $initials .= strtoupper(substr($name_parts[1], 0, 1));
+}
+// Si aucune initiale n'est trouvée, on met 'GS' par défaut
+$initials = !empty($initials) ? $initials : 'GS';
+// ==========================================================
 
 
+// Logique pour les titres de page
 $page = $_GET['page'] ?? 'accueil';
 $page_title = 'Tableau de Bord';
 $titles = [
-    'creer_etudiant' => 'Créer une Fiche Étudiant',
-    'gestion_inscriptions' => 'Gestion des Inscriptions',
-    'activer_comptes' => 'Activation des Comptes',
-    'gestion_notes' => 'Gestion des Notes',
-    'gestion_stages' => 'Suivi des Stages',
-    'generer_documents' => 'Génération de Documents',
-    'traiter_reclamations' => 'Traitement des Réclamations'
+    'creer_etudiant' => '',
+    'gestion_inscriptions' => '',
+    'activer_comptes' => '',
+    'gestion_notes' => '',
+    'gestion_stages' => '',
+    'generer_documents' => '',
+    'traiter_reclamations' => ''
 ];
 if (array_key_exists($page, $titles)) {
     $page_title = $titles[$page];
@@ -31,13 +60,15 @@ if (array_key_exists($page, $titles)) {
             <i class="fa-solid fa-school logo-icon"></i>
             <span class="logo-text">Gestion Scolarité</span>
         </div>
+        
         <div class="user-profile">
-            <div class="user-avatar">GS</div>
-            <h3>Nom du Gestionnaire</h3>
+            <div class="user-avatar"><?php echo $initials; ?></div>
+            <h3><?php echo htmlspecialchars($fullName); ?></h3>
             <p>Gestionnaire Scolarité</p>
         </div>
+        
         <nav class="nav-menu">
-            <ul>
+           <ul>
                 <li class="nav-item <?php echo ($page === 'accueil') ? 'active' : ''; ?>">
                     <a href="dashboard_gestion_scolarite.php"><i class="fa-solid fa-table-columns icon"></i> Tableau de Bord</a>
                 </li>
@@ -62,7 +93,7 @@ if (array_key_exists($page, $titles)) {
                 </li>
 
                 <li class="nav-section-title">Documents & Support</li>
-                 <li class="nav-item <?php echo ($page === 'generer_documents') ? 'active' : ''; ?>">
+                <li class="nav-item <?php echo ($page === 'generer_documents') ? 'active' : ''; ?>">
                     <a href="dashboard_gestion_scolarite.php?page=generer_documents"><i class="fa-solid fa-file-pdf icon"></i> Générer Documents</a>
                 </li>
                 <li class="nav-item <?php echo ($page === 'traiter_reclamations') ? 'active' : ''; ?>">
@@ -80,6 +111,11 @@ if (array_key_exists($page, $titles)) {
         <header class="header">
             <i class="fa-solid fa-bars menu-toggle-icon"></i>
             <h1 class="header-title"><?php echo $page_title; ?></h1>
+
+            <div class="user-info">
+                <span class="user-name"><?php echo htmlspecialchars($fullName); ?></span>
+                <div class="user-avatar"><?php echo $initials; ?></div>
+            </div>
         </header>
 
         <main class="content-area">
@@ -90,10 +126,10 @@ if (array_key_exists($page, $titles)) {
             ];
             
             if (isset($_GET['page']) && in_array($_GET['page'], $allowed_pages)) {
-                // Créer un dossier 'personnel_views' pour ranger ces fichiers
                 include 'personnel_views/' . $_GET['page'] . '.php';
             } else {
-                echo '<h2>Bienvenue, Gestionnaire Scolarité !</h2>';
+                // On personnalise le message d'accueil avec la variable préparée
+                echo '<h2>Bienvenue, ' . htmlspecialchars(explode(' ', $fullName)[0]) . ' !</h2>';
                 echo '<p>Sélectionnez une option dans le menu pour commencer.</p>';
             }
             ?>

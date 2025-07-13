@@ -1,20 +1,22 @@
 <?php
-// session_start();
-// if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_ETUDIANT') {
-//     header('Location: login.php');
-//     exit();
-// }
-
+session_start();
+// AJOUTEZ CETTE LIGNE POUR CONNECTER LE DASHBOARD À LA BDD
+require_once 'config/database.php';
+if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_ETUDIANT') {
+    header('Location: login.php');
+    exit();
+ }
+ 
 // Logique pour déterminer quelle page afficher
 $page = $_GET['page'] ?? 'accueil';
 $page_title = '';
 $titles = [
-    'rapport_soumission' => 'Soumettre mon Rapport',
-    'rapport_suivi' => 'Suivi de mon Rapport',
-    'documents' => 'Mes Documents',
-    'reclamations' => 'Mes Réclamations',
-    'ressources' => 'Ressources & Aide',
-    'profil' => 'Mon Profil'
+    'rapport_soumission' => '',
+    'rapport_suivi' => '',
+    'documents' => '',
+    'reclamations' => '',
+    'ressources' => '',
+    'profil' => ''
 ];
 if (array_key_exists($page, $titles)) {
     $page_title = $titles[$page];
@@ -28,6 +30,9 @@ if (array_key_exists($page, $titles)) {
     <title><?php echo $page_title; ?> - Espace Étudiant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="assets/css/etudiant_style.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+     <!-- Place the first <script> tag in your HTML's <head> -->
+<script src="https://cdn.tiny.cloud/1/ab42dah00m96itwegph80cd2rt871imnngqvobbpv6ddnbi2/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
     <aside class="sidebar">
@@ -56,10 +61,25 @@ if (array_key_exists($page, $titles)) {
     </aside>
 
     <div class="main-container">
-        <header class="header">
-            <i class="fa-solid fa-bars menu-toggle-icon"></i>
-            <h1 class="header-title"><?php echo $page_title; ?></h1>
-           
+         <header class="header">
+        <i class="fa-solid fa-bars menu-toggle-icon"></i>
+        <h1 class="header-title"><?php echo $page_title; ?></h1>
+        
+        <div class="user-info">
+            <span class="user-name">
+                <?php echo htmlspecialchars($_SESSION['user_full_name']); ?>
+            </span>
+            <div class="user-avatar">
+                <?php 
+                    // Affiche les initiales, par exemple "JM" pour "Jean-Marc APATA"
+                    $name_parts = explode(' ', htmlspecialchars($_SESSION['user_full_name']));
+                    $initials = '';
+                    if (isset($name_parts[0])) $initials .= strtoupper(substr($name_parts[0], 0, 1));
+                    if (isset($name_parts[1])) $initials .= strtoupper(substr($name_parts[1], 0, 1));
+                    echo $initials;
+                ?>
+            </div>
+        </div>
         </header>
 
         <main class="content-area">
@@ -67,7 +87,9 @@ if (array_key_exists($page, $titles)) {
             // Liste des pages autorisées
             $allowed_pages = [
                 'accueil', 'rapport_soumission', 'rapport_suivi', 
-                'documents', 'reclamations', 'ressources', 'profil'
+                'documents', 'reclamations', 'ressources', 'profil',
+                 'rapport_redaction_libre','rapport_redaction_modele',
+                 'rapport_historique','rapport_modification'
             ];
             
             // On inclut la bonne page de vue
