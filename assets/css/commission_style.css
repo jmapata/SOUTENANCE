@@ -217,3 +217,11 @@ input[type="text"].form-control {
     background-color: #fff3cd;
     color: #856404;
 }
+
+.logo {
+    width: 240px;
+    max-width: 98%;
+    margin-bottom: 2px;
+    display: block;
+    transition: width 0.3s;
+}

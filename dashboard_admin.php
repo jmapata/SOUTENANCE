@@ -99,7 +99,7 @@ switch ($page) {
             <?php
             $allowed_pages = [
                 'gestion_etudiants', 'gestion_enseignants', 'gestion_personnel', 
-                'gestion_roles', 'referentiels', 'parametres', 'audit_logs'
+                'gestion_roles', 'referentiels', 'parametres', 'gerer_referentiel','audit_logs'
             ];
             
            if (isset($_GET['page']) && in_array($_GET['page'], $allowed_pages)) {
