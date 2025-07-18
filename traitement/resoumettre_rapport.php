@@ -44,6 +44,13 @@ try {
     ");
     $stmt_update->execute([$rapport_id]);
 
+    
+    // ## AUDIT ##
+    $audit_id = 'AUDIT-' . strtoupper(uniqid());
+    $stmt_audit = $pdo->prepare("INSERT INTO enregistrer (id_enregistrement, numero_utilisateur, id_action, date_action, id_entite_concernee, type_entite_concernee) VALUES (?, ?, 'ETUDIANT_RESUMISSION_RAPPORT', NOW(), ?, 'rapport_etudiant')");
+    $stmt_audit->execute([$audit_id, $_SESSION['numero_utilisateur'], $rapport_id]);
+
+
     $pdo->commit();
 
     $_SESSION['success_message'] = "Votre rapport a été corrigé et soumis à nouveau avec succès.";

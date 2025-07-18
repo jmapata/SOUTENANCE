@@ -64,6 +64,15 @@ try {
     
     $stmt_log = $pdo->prepare($sql_log);
     $stmt_log->execute([$personnel_id, $rapport_id, $statut_conformite_log, $commentaire]);
+    // ## AUDIT DE L'ACTION ##
+    $id_action_audit = ($decision === 'conforme') ? 'CONFORMITE_RAPPORT_APPROUVE' : 'CONFORMITE_RAPPORT_REJETE';
+    $audit_id = 'AUDIT-' . strtoupper(uniqid());
+    $stmt_audit = $pdo->prepare(
+        "INSERT INTO enregistrer (id_enregistrement, numero_utilisateur, id_action, date_action, id_entite_concernee, type_entite_concernee) 
+         VALUES (?, ?, ?, NOW(), ?, 'rapport_etudiant')"
+    );
+    $stmt_audit->execute([$audit_id, $user_id_session, $id_action_audit, $rapport_id]);
+
 
     $pdo->commit();
     

@@ -468,7 +468,7 @@ if (isset($_GET['error'])) {
             </form>
 
             <div class="forgot-password">
-                <a href="#">Mot de passe oublié ?</a>
+                <a href="mot_de_passe_oublie.php">Mot de passe oublié ?</a>
             </div>
         </div>
     </div>

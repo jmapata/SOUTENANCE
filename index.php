@@ -160,7 +160,7 @@
                 <div>
                     <h3 class="text-xl font-semibold mb-4">Coordonnées</h3>
                     <p class="mb-4"><i class="fas fa-map-marker-alt mr-3 text-green-400"></i> UFR Mathématiques et Informatique, Université Félix Houphouët-Boigny, Abidjan, Côte d'Ivoire</p>
-                    <p class="mb-4"><i class="fas fa-phone-alt mr-3 text-green-400"></i> +225 XX XX XX XX</p>
+                    <p class="mb-4"><i class="fas fa-phone-alt mr-3 text-green-400"></i> +225 07 49 26 01 46</p>
                     <p class="mb-4"><i class="fas fa-envelope mr-3 text-green-400"></i> miage-master@ufhb.edu.ci</p>
                     
                     <h3 class="text-xl font-semibold mt-8 mb-4">Heures d'ouverture</h3>
@@ -240,9 +240,7 @@
         // Simple script for mobile menu toggle (could be expanded)
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuButton = document.querySelector('.md\\:hidden');
-            // You would add click handler here to show mobile menu
-            // This is just a placeholder for actual functionality
-        });
+         
     </script>
 </body>
 </html>

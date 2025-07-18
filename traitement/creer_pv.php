@@ -56,6 +56,13 @@ try {
     );
     // On laisse le contenu (`libelle_compte_rendu`) vide, il sera pré-rempli sur la page d'édition.
     $stmt_create->execute([$pv_id, $rapport_id, $pv_title, $user_id_session]);
+    // ## AUDIT DE L'ACTION ##
+    $audit_id = 'AUDIT-' . strtoupper(uniqid());
+    $stmt_audit = $pdo->prepare(
+        "INSERT INTO enregistrer (id_enregistrement, numero_utilisateur, id_action, date_action, id_entite_concernee, type_entite_concernee) 
+         VALUES (?, ?, 'COMMISSION_CREATION_PV', NOW(), ?, 'compte_rendu')"
+    );
+    $stmt_audit->execute([$audit_id, $user_id_session, $pv_id]);
 
     $pdo->commit();
 

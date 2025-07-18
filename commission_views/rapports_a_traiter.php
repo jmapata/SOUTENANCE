@@ -117,7 +117,7 @@ $decisions_vote = $pdo->query("SELECT * FROM decision_vote_ref")->fetchAll();
             </div>
 
             <div class="report-card-footer">
-                <a href="dashboard_commission.php?page=communication&topic=<?= $rapport['id_rapport_etudiant']; ?>">
+               <a href="traitement/initialiser_chat.php?topic=<?php echo $rapport['id_rapport_etudiant']; ?>">
                     💬 Discuter de ce rapport
                 </a>
             </div>

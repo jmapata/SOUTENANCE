@@ -76,3 +76,6 @@ $etudiants_a_activer = $stmt->fetchAll();
         </table>
     </div>
 </div>
+<style>
+    
+</style>

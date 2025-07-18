@@ -71,6 +71,14 @@ try {
             $_SESSION['success_message'] = "Votre approbation a été enregistrée. En attente de(s) " . ($nombre_membres_commission - $nombre_approbations) . " autre(s) membre(s).";
         }
     }
+     // ## AUDIT DE L'ACTION ##
+    $id_action_audit = ($decision === 'APPROB_PV_OUI') ? 'COMMISSION_APPROBATION_PV' : 'COMMISSION_REJET_PV';
+    $audit_id = 'AUDIT-' . strtoupper(uniqid());
+    $stmt_audit = $pdo->prepare(
+        "INSERT INTO enregistrer (id_enregistrement, numero_utilisateur, id_action, date_action, id_entite_concernee, type_entite_concernee) 
+         VALUES (?, ?, ?, NOW(), ?, 'compte_rendu')"
+    );
+    $stmt_audit->execute([$audit_id, $user_id_session, $id_action_audit, $pv_id]);
 
     $pdo->commit();
 

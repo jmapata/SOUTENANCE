@@ -88,6 +88,17 @@ try {
         1 
     ]);
 
+    
+    // ## AUDIT DE L'ACTION ##
+    $id_action_audit = ($id_statut_rapport === 'RAP_BROUILLON') ? 'ETUDIANT_CREATION_BROUILLON' : 'ETUDIANT_SOUMISSION_RAPPORT';
+    $audit_id = 'AUDIT-' . strtoupper(uniqid());
+    $stmt_audit = $pdo->prepare(
+        "INSERT INTO enregistrer (id_enregistrement, numero_utilisateur, id_action, date_action, id_entite_concernee, type_entite_concernee) 
+         VALUES (?, ?, ?, NOW(), ?, 'rapport_etudiant')"
+    );
+    $stmt_audit->execute([$audit_id, $_SESSION['numero_utilisateur'], $id_action_audit, $rapport_id]);
+    
+
     // 7. Valider la transaction
     $pdo->commit();
 

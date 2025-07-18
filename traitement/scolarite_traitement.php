@@ -56,7 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 'PAY_PARTIEL',
                 $_POST['numero_recu']
             ]);
-            
+             // ## AUDIT DE L'ACTION ##
+        $audit_id = 'AUDIT-' . strtoupper(uniqid());
+        $stmt_audit = $pdo->prepare(
+            "INSERT INTO enregistrer (id_enregistrement, numero_utilisateur, id_action, date_action, id_entite_concernee, type_entite_concernee) 
+             VALUES (?, ?, 'SCOLARITE_CREATION_FICHE', NOW(), ?, 'etudiant')"
+        );
+        // L'acteur est l'agent de scolarité connecté, l'entité concernée est le nouvel étudiant
+        $stmt_audit->execute([$audit_id, $_SESSION['numero_utilisateur'], $numero_carte_etudiant]);
+
             // Si tout s'est bien passé, on valide les changements dans la base de données
             $pdo->commit();
 

@@ -87,6 +87,7 @@ $types = $pdo->query("SELECT id_type_utilisateur, libelle_type_utilisateur FROM 
                 <input type="date" name="date_debut" value="<?php echo htmlspecialchars($_GET['date_debut'] ?? ''); ?>" title="Date de début">
                 <input type="date" name="date_fin" value="<?php echo htmlspecialchars($_GET['date_fin'] ?? ''); ?>" title="Date de fin">
                 <button type="submit" class="btn btn-primary">Filtrer</button>
+                
             </div>
         </form>
     </div>

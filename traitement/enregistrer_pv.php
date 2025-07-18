@@ -45,6 +45,15 @@ try {
     // Mise à jour du PV
     $stmt_update = $pdo->prepare("UPDATE compte_rendu SET libelle_compte_rendu = ?, id_statut_pv = ? WHERE id_compte_rendu = ?");
     $stmt_update->execute([$contenu_pv, $nouveau_statut, $pv_id]);
+      // ## AUDIT DE L'ACTION (uniquement si le PV est soumis) ##
+    if ($action === 'soumettre_validation') {
+        $audit_id = 'AUDIT-' . strtoupper(uniqid());
+        $stmt_audit = $pdo->prepare(
+            "INSERT INTO enregistrer (id_enregistrement, numero_utilisateur, id_action, date_action, id_entite_concernee, type_entite_concernee) 
+             VALUES (?, ?, 'COMMISSION_SOUMISSION_PV', NOW(), ?, 'compte_rendu')"
+        );
+        $stmt_audit->execute([$audit_id, $user_id_session, $pv_id]);
+    }
 
     $pdo->commit();
 
