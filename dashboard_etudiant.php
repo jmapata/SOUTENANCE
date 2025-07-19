@@ -1,12 +1,21 @@
 <?php
 session_start();
-// AJOUTEZ CETTE LIGNE POUR CONNECTER LE DASHBOARD À LA BDD
 require_once 'config/database.php';
 if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_ETUDIANT') {
     header('Location: login.php');
     exit();
- }
- 
+}
+// Récupérer la photo de profil de l'étudiant
+// On récupère la photo et les noms depuis utilisateur + etudiant
+$stmt = $pdo->prepare("SELECT u.photo_profil, e.prenom, e.nom FROM utilisateur u JOIN etudiant e ON u.numero_utilisateur = e.numero_utilisateur WHERE u.numero_utilisateur = ?");
+$stmt->execute([$_SESSION['numero_utilisateur']]);
+$user = $stmt->fetch();
+$photo_profil = $user['photo_profil'] ?? '';
+$prenom = $user['prenom'] ?? '';
+$nom = $user['nom'] ?? '';
+$initials = '';
+if (!empty($prenom)) $initials .= strtoupper(substr($prenom, 0, 1));
+if (!empty($nom)) $initials .= strtoupper(substr($nom, 0, 1));
 // Logique pour déterminer quelle page afficher
 $page = $_GET['page'] ?? 'accueil';
 $page_title = '';
@@ -70,14 +79,11 @@ if (array_key_exists($page, $titles)) {
                 <?php echo htmlspecialchars($_SESSION['user_full_name']); ?>
             </span>
             <div class="user-avatar">
-                <?php 
-                    // Affiche les initiales, par exemple "JM" pour "Jean-Marc APATA"
-                    $name_parts = explode(' ', htmlspecialchars($_SESSION['user_full_name']));
-                    $initials = '';
-                    if (isset($name_parts[0])) $initials .= strtoupper(substr($name_parts[0], 0, 1));
-                    if (isset($name_parts[1])) $initials .= strtoupper(substr($name_parts[1], 0, 1));
-                    echo $initials;
-                ?>
+                <?php if (!empty($photo_profil)): ?>
+                    <img src="<?php echo htmlspecialchars($photo_profil); ?>" alt="Photo de profil" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                <?php else: ?>
+                    <?php echo $initials; ?>
+                <?php endif; ?>
             </div>
         </div>
         </header>
