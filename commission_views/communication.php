@@ -136,7 +136,7 @@ $messages = $stmt_messages->fetchAll();
     margin-bottom: 10px;
 }
 .chat-form button {
-    background: #007bff;
+    background: #2962ff;
     color: #fff;
     border: none;
     padding: 10px 15px;
