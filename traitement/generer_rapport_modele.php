@@ -8,6 +8,19 @@ require_once '../vendor/autoload.php';
 // Inclure la connexion à la base de données
 require_once '../config/database.php';
 
+// Configuration de mPDF pour correspondre au style du modèle
+$mpdf = new \Mpdf\Mpdf([
+    'mode' => 'utf-8',
+    'format' => 'A4',
+    'margin_left' => 25,
+    'margin_right' => 25,
+    'margin_top' => 30,
+    'margin_bottom' => 30,
+    'default_font' => 'times',
+    'default_font_size' => 12,
+    'debug' => true
+]);
+
 /**
  * Fonction pour envoyer une réponse JSON propre et arrêter le script.
  */
@@ -37,7 +50,162 @@ if (empty($theme) || empty($etudiant_nom)) {
     send_json_response(['success' => false, 'message' => 'Le thème et votre nom sont obligatoires.']);
 }
 
+// Définition du CSS pour le PDF
+$css = '
+<style>
+    body {
+        font-family: "Times New Roman", Times, serif;
+        line-height: 1.4;
+        color: #000;
+    }
+    .preview-header {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .header-left, .header-right {
+        width: 48%;
+        text-align: center;
+    }
+    .preview-header img {
+        height: 60px;
+        margin: 15px 0;
+    }
+    .logo-kyria {
+        height: 40px;
+    }
+    .preview-body {
+        text-align: center;
+        margin-top: 30px;
+    }
+    .degree-info {
+        font-size: 12pt;
+        margin-bottom: 30px;
+    }
+    .theme {
+        font-size: 18pt;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 15px 0;
+        margin: 30px auto;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        width: 90%;
+        text-align: center;
+    }
+    .author-block {
+        margin: 30px 0 50px 0;
+        text-align: center;
+    }
+    .preview-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
+    }
+    .footer-box {
+        border: 1px solid #000;
+        width: 48%;
+        padding: 15px;
+        text-align: center;
+    }
+    .footer-box strong {
+        font-size: 11pt;
+        text-transform: uppercase;
+    }
+    h2 {
+        font-size: 14pt;
+        margin-top: 20px;
+    }
+    h3 {
+        font-size: 12pt;
+        margin-top: 15px;
+    }
+    p {
+        text-align: justify;
+        margin: 10px 0;
+    }
+    #preview-content {
+        margin-top: 60px;
+    }
+</style>
+';
+
+// Générer le contenu HTML du rapport
+$html = '
+<!DOCTYPE html>
+<html>
+<head>'.$css.'</head>
+<body>
+    <table width="100%" style="text-align: center;">
+        <tr>
+            <td width="48%" style="text-align: center; vertical-align: top;">
+                <p style="margin: 0;">MINISTERE DE L\'ENSEIGNEMENT SUPERIEUR<br>ET DE LA RECHERCHE SCIENTIFIQUE</p>
+                <img src="../assets/images/UNIVT_CCD.jpg" alt="Logo Université" style="height: 60px; margin: 15px auto;">
+                <p style="margin: 0;">UNIVERSITE FELIX HOUPHOUET BOIGNY</p>
+                <p style="margin: 0;">UFR MATHEMATIQUES ET INFORMATIQUE<br>FILLIERES PROFESSIONNALISEES MIAGE-GI</p>
+            </td>
+            <td width="48%" style="text-align: center; vertical-align: top;">
+                <p style="margin: 0;">REPUBLIQUE DE COTE D\'IVOIRE<br>Union - Discipline - Travail</p>
+                <img src="../assets/images/EMB_CI.jpg" alt="Logo Côte d\'Ivoire" style="height: 60px; margin: 15px auto;">
+                <img src="../assets/images/KYRIA.jpg" alt="Logo Kyria" style="height: 40px; margin: 15px auto;">
+                <p style="margin: 0;">KYRIA CONSULTANCY SERVICES</p>
+            </td>
+        </tr>
+    </table>
+
+    <div class="preview-body">
+        <p class="degree-info">
+            Mémoire de fin de cycle pour l\'obtention du:<br>
+            <strong>Diplôme d\'ingénieur de conception en informatique</strong><br>
+            Option Méthodes Informatiques Appliquées à la Gestion des Entreprises
+        </p>
+        <div class="theme">'.htmlspecialchars($theme).'</div>
+        <div class="author-block">
+            <strong>PRESENTE PAR :</strong><br>
+            <span>'.htmlspecialchars($etudiant_nom).'</span>
+        </div>
+    </div>
+
+    <table width="100%" style="margin-top: 50px;">
+        <tr>
+            <td width="45%" style="text-align: center; border: 1px solid #000; padding: 15px;">
+                <strong style="display: block; text-transform: uppercase; margin-bottom: 10px;">ENCADREUR</strong>
+                <span>'.htmlspecialchars($encadreur_nom).'</span>
+            </td>
+            <td width="10%">&nbsp;</td>
+            <td width="45%" style="text-align: center; border: 1px solid #000; padding: 15px;">
+                <strong style="display: block; text-transform: uppercase; margin-bottom: 10px;">MAITRE DE STAGE</strong>
+                <span>'.htmlspecialchars($maitre_stage_nom).'</span>
+            </td>
+        </tr>
+    </table>
+
+    <pagebreak />
+
+    <div id="preview-content">';
+
+// Ajouter le contenu dynamique
+foreach ($contenu_dynamique as $element) {
+    switch ($element["type"]) {
+        case "title":
+            $html .= '<h2>'.htmlspecialchars($element["valeur"]).'</h2>';
+            break;
+        case "subtitle":
+            $html .= '<h3>'.htmlspecialchars($element["valeur"]).'</h3>';
+            break;
+        case "paragraph":
+            $html .= '<p>'.htmlspecialchars($element["valeur"]).'</p>';
+            break;
+    }
+}
+
+$html .= '</div></body></html>';
+
 try {
+    // Écrire le contenu HTML dans le PDF
+    $mpdf->WriteHTML($html);
+    
     // --- PARTIE 1 : SAUVEGARDE EN BASE DE DONNÉES ---
     $pdo->beginTransaction();
 
@@ -96,17 +264,7 @@ try {
 
     // --- PARTIE 2 : GÉNÉRATION DU FICHIER PDF ---
     
-    // On capture le contenu du template HTML dans une variable PHP
-    ob_start();
-    // Le template a accès à toutes les variables définies ci-dessus ($theme, $etudiant_nom, etc.)
-    include '../templates/rapport_pdf_template.php';
-    $html_content = ob_get_clean();
-
-    // On crée une nouvelle instance de mPDF
-    $mpdf = new \Mpdf\Mpdf(['tempDir' => __DIR__ . '/tmp']);
-    // On écrit le contenu HTML dans le document PDF
-    $mpdf->WriteHTML($html_content);
-    // On sauvegarde le fichier PDF sur le serveur à l'emplacement défini
+    // Sauvegarder le PDF généré précédemment
     $mpdf->Output($pdf_path_sur_serveur, \Mpdf\Output\Destination::FILE);
 
 
