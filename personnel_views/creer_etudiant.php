@@ -110,3 +110,367 @@ $total_scolarite = 1300000;
         </table>
     </div>
 </div>
+<style>
+    /* CSS pour la page creer_etudiant.php */
+body {
+    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+/* Messages de succès et d'erreur */
+.success-message {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    color: #166534;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #22c55e;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(34, 197, 94, 0.1);
+}
+
+.error-message {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #dc2626;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ef4444;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.1);
+}
+
+/* En-tête de page */
+.page-header {
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 30px 0;
+    background: linear-gradient(135deg, #0d47a1, #1565c0);
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 20px rgba(13, 71, 161, 0.15);
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Cartes principales */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 20px rgba(13, 71, 161, 0.08);
+    border: 1px solid rgba(13, 71, 161, 0.1);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #0d47a1, #1565c0);
+}
+
+.card-header {
+    padding: 25px 25px 0 25px;
+    border-bottom: 1px solid rgba(13, 71, 161, 0.1);
+    margin-bottom: 25px;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #0d47a1;
+    margin: 0 0 15px 0;
+}
+
+.card-content {
+    padding: 0 25px 25px 25px;
+}
+
+/* Formulaire */
+.form-layout {
+    max-width: 100%;
+}
+
+.form-section {
+    margin-bottom: 35px;
+    padding: 20px;
+    background: rgba(13, 71, 161, 0.02);
+    border-radius: 8px;
+    border-left: 4px solid #0d47a1;
+}
+
+.form-section h3 {
+    color: #0d47a1;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-section h3::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #0d47a1, #1565c0);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.form-section p {
+    color: #64748b;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.form-section p strong {
+    color: #0d47a1;
+    font-weight: 600;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0d47a1;
+    box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #1565c0;
+}
+
+/* Actions du formulaire */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(13, 71, 161, 0.1);
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 200px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d47a1, #1565c0);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.4);
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: #0d47a1;
+    border: 2px solid #0d47a1;
+}
+
+.btn-secondary:hover {
+    background-color: #0d47a1;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.3);
+}
+
+/* Tableau */
+.table-spaced {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(13, 71, 161, 0.1);
+}
+
+.table-spaced th {
+    background: linear-gradient(135deg, #0d47a1, #1565c0);
+    color: #ffffff;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-spaced td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.95rem;
+}
+
+.table-spaced tr:hover {
+    background-color: rgba(13, 71, 161, 0.02);
+}
+
+.table-spaced tr:last-child td {
+    border-bottom: none;
+}
+
+/* Styles spécifiques pour les montants */
+.table-spaced td[style*="color: #b91c1c"] {
+    color: #dc2626 !important;
+    font-weight: 600;
+}
+
+.table-spaced td[style*="color: #15803d"] {
+    color: #059669 !important;
+    font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .page-header {
+        padding: 20px 0;
+    }
+    
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .card-header,
+    .card-content {
+        padding: 20px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .table-spaced {
+        font-size: 0.85rem;
+    }
+    
+    .table-spaced th,
+    .table-spaced td {
+        padding: 10px 12px;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.card:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+/* Styles pour les champs obligatoires */
+.form-group input[required] {
+    border-left: 4px solid #0d47a1;
+}
+
+.form-group input[required]:focus {
+    border-left-color: #1565c0;
+}
+
+/* Amélioration visuelle des placeholders */
+.form-group input::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Style pour les sections de formulaire */
+.form-section:nth-child(1) {
+    border-left-color: #0d47a1;
+}
+
+.form-section:nth-child(2) {
+    border-left-color: #1565c0;
+}
+</style>
