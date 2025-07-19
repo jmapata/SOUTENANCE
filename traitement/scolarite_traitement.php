@@ -17,6 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if ($action === 'creer_fiche_etudiant') {
         
+        // Validation de la date de naissance
+        $date_naissance = $_POST['date_naissance'] ?? '';
+        if (!empty($date_naissance)) {
+            $age = date_diff(date_create($date_naissance), date_create('today'))->y;
+            if ($age < 18) {
+                $_SESSION['error_message'] = "L'étudiant doit avoir au moins 18 ans.";
+                header('Location: ../dashboard_gestion_scolarite.php?page=creer_etudiant');
+                exit();
+            }
+        }
+
         // On utilise une transaction pour s'assurer que toutes les opérations réussissent ou échouent ensemble.
         $pdo->beginTransaction();
 

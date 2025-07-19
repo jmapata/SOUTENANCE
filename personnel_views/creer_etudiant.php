@@ -43,8 +43,36 @@ $total_scolarite = 1300000;
                         <label for="email">Email de Contact</label>
                         <input type="email" id="email" name="email" required>
                     </div>
-                    <div class="form-group"><label for="date_naissance">Date de naissance</label><input type="date" id="date_naissance" name="date_naissance"></div>
-                    <div class="form-group"><label for="nationalite">Nationalité</label><input type="text" id="nationalite" name="nationalite"></div>
+                    <div class="form-group">
+                        <label for="date_naissance">Date de naissance</label>
+                        <input type="date" id="date_naissance" name="date_naissance" required max="<?php echo date('Y-m-d', strtotime('-18 years')); ?>">
+                        <span id="date_error" class="error-text" style="color: #dc2626; font-size: 0.875rem; margin-top: 4px; display: none;">L'étudiant doit avoir au moins 18 ans.</span>
+                    </div>
+                    <div class="form-group"><label for="nationalite">Nationalité</label><input type="text" id="nationalite" name="nationalite"></div>                    
+                    <script>
+                    document.getElementById('date_naissance').addEventListener('change', function(e) {
+                        const dateNaissance = new Date(this.value);
+                        const aujourd_hui = new Date();
+                        const age = aujourd_hui.getFullYear() - dateNaissance.getFullYear();
+                        const moisDiff = aujourd_hui.getMonth() - dateNaissance.getMonth();
+                        
+                        // Ajuster l'âge si l'anniversaire n'est pas encore passé cette année
+                        if (moisDiff < 0 || (moisDiff === 0 && aujourd_hui.getDate() < dateNaissance.getDate())) {
+                            age_final = age - 1;
+                        } else {
+                            age_final = age;
+                        }
+                        
+                        const errorElement = document.getElementById('date_error');
+                        if (age_final < 18) {
+                            errorElement.style.display = 'block';
+                            this.setCustomValidity('L\'étudiant doit avoir au moins 18 ans');
+                        } else {
+                            errorElement.style.display = 'none';
+                            this.setCustomValidity('');
+                        }
+                    });
+                    </script>
                     <div class="form-group"><label for="telephone">Contact</label><input type="tel" id="telephone" name="telephone"></div>
                 </div>
             </div>

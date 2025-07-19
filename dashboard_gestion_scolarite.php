@@ -1,18 +1,10 @@
 <?php
 session_start();
-
 // Sécurité : vérifier que l'utilisateur est connecté et est bien un gestionnaire de scolarité
 if (!isset($_SESSION['loggedin']) || $_SESSION['user_group'] !== 'GRP_SCOLARITE') {
     header('Location: login.php?error=unauthorized');
     exit();
 }
-
-// ==========================================================
-// ## LOGIQUE PHP EN HAUT DU FICHIER POUR ÉVITER LES ERREURS ##
-// ==========================================================
-// On définit le nom et les initiales UNE SEULE FOIS ici.
-
-// 1. On récupère le nom depuis la session. Si elle est vide, on met un nom par défaut.
 $fullName = $_SESSION['user_full_name'] ?? 'Gestionnaire';
 
 // 2. On calcule les initiales de manière sécurisée
@@ -26,10 +18,7 @@ if (isset($name_parts[1]) && !empty($name_parts[1])) {
 }
 // Si aucune initiale n'est trouvée, on met 'GS' par défaut
 $initials = !empty($initials) ? $initials : 'GS';
-// ==========================================================
 
-
-// Logique pour les titres de page
 $page = $_GET['page'] ?? 'accueil';
 $page_title = '';
 $titles = [
