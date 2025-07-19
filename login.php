@@ -16,6 +16,8 @@ if (isset($_GET['error'])) {
         $error_message = 'Identifiant ou mot de passe incorrect.';
     } elseif ($_GET['error'] === 'missing_fields') {
         $error_message = 'Veuillez remplir tous les champs.';
+    } elseif ($_GET['error'] === 'account_inactive') {
+        $error_message = 'Votre compte est désactivé. Veuillez contacter l\'administration.';
     }
 }
 ?>

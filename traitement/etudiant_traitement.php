@@ -14,6 +14,28 @@ function genererMotDePasse($longueur = 12) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
+    if ($_POST['action'] === 'toggle_status') {
+        try {
+            $numero_utilisateur = $_POST['numero_utilisateur'] ?? '';
+            $current_status = $_POST['current_status'] ?? '';
+            
+            // Basculer le statut
+            $nouveau_statut = ($current_status === 'actif') ? 'inactif' : 'actif';
+            
+            // Mettre à jour le statut
+            $stmt = $pdo->prepare("UPDATE utilisateur SET statut_compte = ? WHERE numero_utilisateur = ?");
+            $stmt->execute([$nouveau_statut, $numero_utilisateur]);
+            
+            // Rediriger avec un message de succès
+            header('Location: ../dashboard_admin.php?page=gestion_etudiants&success=status_updated');
+            exit();
+            
+        } catch (Exception $e) {
+            header('Location: ../dashboard_admin.php?page=gestion_etudiants&error=update_failed');
+            exit();
+        }
+    }
+    
     if ($_POST['action'] === 'creer_compte_etudiant') {
         
         $numero_carte_etudiant = $_POST['numero_carte_etudiant'];

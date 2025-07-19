@@ -23,6 +23,11 @@ try {
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, trim($user['mot_de_passe']))) {
+        // Vérifier si le compte est actif
+        if ($user['statut_compte'] !== 'actif') {
+            header('Location: ../login.php?error=account_inactive');
+            exit();
+        }
         
         session_regenerate_id(true);
 
