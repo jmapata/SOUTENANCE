@@ -59,7 +59,7 @@ if (array_key_exists($page, $titles)) {
                         <li><a href="dashboard_etudiant.php?page=rapport_suivi">Suivi du processus</a></li>
                     </ul>
                 </li>
-                <li class="nav-item <?php echo ($page === 'documents') ? 'active' : ''; ?>"><a href="dashboard_etudiant.php?page=documents"><i class="fa-solid fa-folder-open icon"></i><span>Mes Documents</span></a></li>
+                <li class="nav-item <?php echo ($page === 'documents') ? 'active' : ''; ?>"><a href="dashboard_etudiant.php?page=documents"><i class="fa-solid fa-folder-open icon"></i><span>Mon Stage</span></a></li>
                 <li class="nav-item <?php echo ($page === 'reclamations') ? 'active' : ''; ?>"><a href="dashboard_etudiant.php?page=reclamations"><i class="fa-solid fa-circle-question icon"></i><span>Mes Réclamations</span></a></li>
                 <li class="nav-item <?php echo ($page === 'ressources') ? 'active' : ''; ?>"><a href="dashboard_etudiant.php?page=ressources"><i class="fa-solid fa-book-open icon"></i><span>Ressources & Aide</span></a></li>
                 <li class="nav-separator"></li>
