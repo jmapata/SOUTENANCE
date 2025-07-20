@@ -48,10 +48,24 @@
         .btn-accent:hover {
             background-color: #e6c200;
         }
+
+        /* Styles pour les liens qui ressemblent à des boutons */
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            /* Reprenez les styles de padding, font-weight, border-radius etc. de vos boutons originaux */
+            padding: 12px 24px; /* Exemple, ajustez selon vos styles Tailwind ou les classes btn-primary/btn-accent */
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none; /* Enlève le soulignement du lien */
+            /* Ajoutez les classes de transition si elles ne sont pas déjà incluses par Tailwind */
+            transition: all 0.3s ease; 
+        }
+
     </style>
 </head>
 <body class="font-sans bg-gray-100">
-    <!-- Navigation -->
     <nav class="bg-[var(--ufhb-dark)] text-white shadow-lg">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
@@ -74,29 +88,26 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero-bg text-white py-20 md:py-32 px-4">
         <div class="container mx-auto text-center">
             <h1 class="text-4xl md:text-6xl font-bold mb-6">Plateforme de Gestion des Soutenances</h1>
             <p class="text-xl md:text-2xl mb-8">Master 2 MIAGE - Université Félix Houphouët-Boigny</p>
             <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button class="btn-primary font-bold py-3 px-6 rounded-lg transition-all">
+                <a href="login.php" class="btn-primary btn-link py-3 px-6 rounded-lg">
                     <i class="fas fa-sign-in-alt mr-2"></i>Connexion Étudiant
-                </button>
-                <button class="btn-accent font-bold py-3 px-6 rounded-lg transition-all">
+                </a>
+                <a href="login.php" class="btn-accent btn-link py-3 px-6 rounded-lg">
                     <i class="fas fa-user-tie mr-2"></i>Espace Enseignant
-                </button>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="py-16 px-4">
         <div class="container mx-auto">
             <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Fonctionnalités de la Plateforme</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
                 <div class="bg-white p-6 rounded-lg shadow-md card-hover transition-all">
                     <div class="text-green-600 text-4xl mb-4">
                         <i class="fas fa-calendar-alt"></i>
@@ -105,7 +116,6 @@
                     <p class="text-gray-600">Gérez facilement les dates et horaires des soutenances avec un calendrier interactif.</p>
                 </div>
                 
-                <!-- Feature 2 -->
                 <div class="bg-white p-6 rounded-lg shadow-md card-hover transition-all">
                     <div class="text-blue-600 text-4xl mb-4">
                         <i class="fas fa-file-upload"></i>
@@ -114,7 +124,6 @@
                     <p class="text-gray-600">Les étudiants peuvent déposer leurs mémoires en ligne avec suivi des versions.</p>
                 </div>
                 
-                <!-- Feature 3 -->
                 <div class="bg-white p-6 rounded-lg shadow-md card-hover transition-all">
                     <div class="text-purple-600 text-4xl mb-4">
                         <i class="fas fa-users"></i>
@@ -127,7 +136,6 @@
     </section>
 
 
-    <!-- About Section -->
     <section class="py-16 px-4">
         <div class="container mx-auto flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
@@ -151,7 +159,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="py-16 px-4 bg-[var(--ufhb-dark)] text-white">
         <div class="container mx-auto">
             <h2 class="text-3xl font-bold text-center mb-12">Contactez-nous</h2>
@@ -195,7 +202,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-[var(--ufhb-blue)] text-white py-8 px-4">
         <div class="container mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -240,7 +246,9 @@
         // Simple script for mobile menu toggle (could be expanded)
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuButton = document.querySelector('.md\\:hidden');
-         
+           // Your JavaScript code might be missing here if the previous snippet was incomplete.
+           // Ensure the DOMContentLoaded listener is properly closed.
+        }); 
     </script>
 </body>
 </html>

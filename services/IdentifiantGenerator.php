@@ -30,7 +30,7 @@ class IdentifiantGenerator {
 
         try {
             // Démarre une transaction pour assurer l'atomicité de l'opération
-            $pdo->beginTransaction();
+        
 
             // 1. Verrouiller la ligne de la séquence pour éviter les conditions de concurrence (race conditions)
             // SELECT ... FOR UPDATE bloque la ligne pour d'autres transactions jusqu'à ce que la transaction actuelle soit terminée.
@@ -58,7 +58,7 @@ class IdentifiantGenerator {
             }
 
             // Valide la transaction, libérant le verrou sur la ligne de séquence
-            $pdo->commit();
+    
 
             // 2. Formater la séquence (ex: 0001, 0015, 0128)
             // sprintf('%04d', ...) formate le nombre avec des zéros à gauche pour avoir 4 chiffres.
@@ -80,6 +80,3 @@ class IdentifiantGenerator {
         }
     }
 }
-// TRÈS IMPORTANT : Pas de balise de fermeture '?>' à la fin de ce fichier.
-// Cela élimine le risque d'espaces ou de sauts de ligne accidentels après la fermeture,
-// qui pourraient corrompre la sortie JSON d'autres scripts.
