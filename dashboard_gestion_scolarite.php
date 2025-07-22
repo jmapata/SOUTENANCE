@@ -155,7 +155,7 @@ body {
     left: 0;
     width: 280px;
     height: 100vh;
-    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+    background: linear-gradient(135deg, #0d47a1 0%, #0d47a1 100%);
     z-index: 1000;
     transition: transform 0.3s ease;
     box-shadow: 4px 0 20px rgba(13, 71, 161, 0.1);
