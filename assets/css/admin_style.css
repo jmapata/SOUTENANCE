@@ -95,7 +95,7 @@ body {
 }
 
 .logo-icon {
-    font-size: 32px;
+    font-size: 25px;
     color: var(--light-blue);
     filter: drop-shadow(0 2px 8px rgba(96, 165, 250, 0.5));
     animation: pulse 2s infinite;
@@ -670,9 +670,9 @@ body {
     border: 1px solid var(--border-light);
 }
 
-input,
-select,
-textarea {
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 14px 16px;
     border: 2px solid var(--border-color);
@@ -685,9 +685,9 @@ textarea {
     font-weight: 500;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--secondary-blue);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
